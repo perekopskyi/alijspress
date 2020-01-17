@@ -64,10 +64,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const getGoods = (handler, filter) => {
     fetch('/db/db.json')
-      .then(response => response.json())
+      .then(response => {
+        toggleLoader(response);
+        return response.json();
+      })
       .then(filter)
       .then(handler);
   };
+
+  const toggleLoader = (response) => {
+    const loader = document.querySelector('#spinner');
+    loader.style.display = 'block';
+    if (response.ok) {
+      loader.style.display = 'none';
+    } 
+  }
 
   const randomSort = goods => goods.sort(() => Math.random() - 0.5);
   
